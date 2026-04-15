@@ -15,11 +15,11 @@ public class JasyptTest {
     @Test
     void encryptTest() {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setPassword("workoutrecord");  // 암호화 키
+        encryptor.setPassword("");  // 암호화 키
         encryptor.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
         encryptor.setIvGenerator(new RandomIvGenerator());
 
-        String encrypt = encryptor.encrypt("admin12!@");
+        String encrypt = encryptor.encrypt("");
 
         System.out.println("암호화 값: " + encrypt);
     }
@@ -27,7 +27,7 @@ public class JasyptTest {
     @Test
     void decryptTest() {
         StandardPBEStringEncryptor decryptor = new StandardPBEStringEncryptor();
-        decryptor.setPassword("workoutrecord");
+        decryptor.setPassword("");
         decryptor.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
         decryptor.setIvGenerator(new RandomIvGenerator());
 

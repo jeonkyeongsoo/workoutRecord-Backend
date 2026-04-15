@@ -3,6 +3,7 @@ package kr.co.side.healthcare.common.exception;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -31,5 +32,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
+
+    @ExceptionHandler(MailSendException.class)
+    public ResponseEntity<?> handleMailSendException(MailSendException e){
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<?> handleNullPointerException(NullPointerException e){
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
+
 
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.side.healthcare.mapper.mail.sendHistory.SendHistoryMapper">
+    <insert id="insertSendHistory" parameterType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO">
+        insert into
+            tb_maill_send_history(login_id, email, type, auth_code, created_at)
+        values (#{loginId}, #{email}, #{type}, #{authCode}, NOW())
+    </insert>
+
+    <update id="updateMailSuccessYn" parameterType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO">
+        update
+            tb_maill_send_history
+        set
+            mail_success_yn = #{mailSuccessYn}
+        where
+            login_id = #{loginId}
+    </update>
+</mapper>

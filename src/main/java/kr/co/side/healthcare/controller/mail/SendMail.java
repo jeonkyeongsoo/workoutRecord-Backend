@@ -1,5 +1,6 @@
 package kr.co.side.healthcare.controller.mail;
 
+import jakarta.mail.MessagingException;
 import kr.co.side.healthcare.service.mail.SendMailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,18 @@ public class SendMail {
     private final SendMailServiceImpl sendMailService;
 
     @PostMapping("/api/sendMail")
-    public ResponseEntity sendMail(@RequestBody Map<String, String> request){
+    public ResponseEntity sendMail(@RequestBody Map<String, String> request) {
 
-        sendMailService.subConDecision(request.get("email"), request.get("type"));
+        sendMailService.subConDecision(request.get("email"), request.get("type"), request.get("loginId"));
 
-        return null;
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/verifyCode")
+    public ResponseEntity verifyCode(@RequestBody Map<String, String> request) {
+
+        sendMailService.verifyAuthCode(request.get("email"), request.get("authCode"));
+
+        return ResponseEntity.ok().build();
     }
 }

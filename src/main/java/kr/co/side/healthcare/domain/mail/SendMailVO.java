@@ -18,4 +18,6 @@ public class SendMailVO {
     private String subject;
     private String content;
 
+    private String loginId;
+
 }

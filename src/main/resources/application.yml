@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: healthcare
+
+  datasource:
+    url: ENC(uuvM3M4xSQZr4yDKTFF8xGqVeAipE/qlL8Unv9vwUzP21j1rxfDSdGKIQZaoOW0T7R4w6UHHaLvS30WWwaK8kOm1PxxRovUuojnST/zEvf5wBFLQ64yDFUZwRtgrWlAmAe5U9UlXoGWn3+b4hjqljg==)
+    username: ENC(cBSkX9YVjhgwbhED2w5VCrm2tgijzHOiM1ENrmEm0gIx4rws2/pYFoE1WoBQHEx2)
+    password: ENC(d4aj0VT+LGyS1jbIL7Jm5XzjFFfqVK7QZhtjUo6g+Dtsm2YzvHCuyZ3VeqLX+LK5)
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+
+  security:
+    user:
+      name: ENC(cjmKewIIsQx5NVMdWMEjCFJXPe2A0/o5rLiCfiBIKNmaQDct3fGwLzzTU/KDL7RK)
+      password: ENC(myMGRve66eHnMRezni+/aQi7OeYCxreiE6HMN/q1EmwewCmK6QGf8p0z+CJmppZe)
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(q05A6Lm9C44/fczMyjUnBNhhF1BVjc5KtYwE0MUhujyUxYM1ltcPXNxB1C0NFoxVbRRc0bvYe4cHzzvHGxOQkQ==)
+    password: ENC(hn/L4FnGbTXGMUbpdUjIjQco9Qt1YREPrQ4EWg7OEdGyNSXzKgPXOyX7AVLgiAvkMoTN5muRsUeZrSmfd83qew==)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
+
+
+
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: kr.co.side.healthcare
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 9090
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD}
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    iv-generator-classname: org.jasypt.iv.RandomIvGenerator

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.side.healthcare.mapper.user.UserMapper">
+    <select id="findUser" parameterType="String" resultType="kr.co.side.healthcare.domain.user.LoginUserResVO">
+        SELECT
+            tu.user_id,
+            tu.login_id,
+            tu.password,
+            tu.role_id,
+            tu.created_at,
+            tu.updated_at,
+            tu.use_yn,
+            tu.locked_yn,
+            tu.login_fail_count,
+            tu.delete_yn,
+            tr.role_name,
+            tu.email,
+            tu.phone,
+            tu.birth,
+            tu.name
+        FROM
+            tb_user tu join tb_roles tr on tu.role_id = tr.role_id
+        WHERE
+            tu.login_id = #{username}
+    </select>
+
+    <update id="increaseLoginFailCnt" parameterType="kr.co.side.healthcare.domain.user.LoginUserResVO">
+        UPDATE
+            tb_user
+        SET
+            login_fail_count = login_fail_count + 1
+            <if test="loginFailCount >= 4">
+                , locked_yn = 'Y'
+            </if>
+        WHERE
+            login_id = #{loginId}
+    </update>
+
+    <update id="resetLoginFailCnt" parameterType="kr.co.side.healthcare.domain.user.LoginUserResVO">
+        UPDATE
+            tb_user
+        SET
+            login_fail_count = 0
+        WHERE
+            login_id = #{loginId}
+    </update>
+
+    <insert id="insertSignupInfo" parameterType="kr.co.side.healthcare.domain.user.UserVO">
+        insert into tb_user
+        <trim prefix="("  suffix=")" suffixOverrides=",">
+            user_id,
+            login_id,
+            email,
+            name,
+            birth,
+            phone,
+            role_id,
+            <if test="password != null and password != ''">
+                password
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=","> /* suffixOverrides 가 자동으로 마지막 , 를 제거해준다. */
+            #{userId},
+            #{loginId},
+            #{email},
+            #{name},
+            #{birth},
+            #{phone},
+            #{roleId},
+            <if test="password != null and password != ''">
+                #{password},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="confirmUserByLoginId" parameterType="String" resultType="boolean">
+        select EXISTS(
+            select 1
+            from tb_user
+            where login_id = #{loginId}
+        )
+    </select>
+</mapper>

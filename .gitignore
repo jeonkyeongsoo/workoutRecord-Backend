@@ -1,0 +1,76 @@
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+### Gradle ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### STS / Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### OS ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Misc ###
+HELP.md
+*.swp
+*.swo
+*~
+
+### Jasypt 암복호화 테스트 파일 ###
+**/JasyptTest.java
+**/*EncryptTest.*
+**/*DecryptTest.*
+**/*CryptoTest.*
+
+### 복호화 키 파일 ###
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+*.pfx
+*.der
+*.crt
+*.cer
+**/secret-key*
+**/private-key*

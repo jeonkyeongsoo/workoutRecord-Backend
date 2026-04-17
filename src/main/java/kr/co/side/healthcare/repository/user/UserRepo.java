@@ -15,4 +15,8 @@ public interface UserRepo {
     int insertSignupInfo(UserVO userVO);
 
     boolean confirmUserByLoginId(String loginId);
+
+    UserVO getPassword(UserVO userVO);
+
+    void resetPassword(UserVO userVO);
 }

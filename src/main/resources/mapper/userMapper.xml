@@ -83,4 +83,22 @@
             where login_id = #{loginId}
         )
     </select>
+
+    <select id="getPassword" parameterType="kr.co.side.healthcare.domain.user.UserVO" resultType="kr.co.side.healthcare.domain.user.UserVO">
+        select
+            password
+        from
+            tb_user
+        where
+            login_id = #{loginId}
+    </select>
+
+    <update id="resetPassword" parameterType="kr.co.side.healthcare.domain.user.UserVO">
+        update
+            tb_user
+        set
+            password = #{password}
+        where
+            login_id = #{loginId}
+    </update>
 </mapper>

@@ -6,7 +6,6 @@ import kr.co.side.healthcare.mapper.user.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,5 +36,15 @@ public class UserRepoImpl implements UserRepo{
     @Override
     public boolean confirmUserByLoginId(String loginId) {
         return userMapper.confirmUserByLoginId(loginId);
+    }
+
+    @Override
+    public UserVO getPassword(UserVO userVO) {
+        return userMapper.getPassword(userVO);
+    }
+
+    @Override
+    public void resetPassword(UserVO userVO) {
+        userMapper.resetPassword(userVO);
     }
 }

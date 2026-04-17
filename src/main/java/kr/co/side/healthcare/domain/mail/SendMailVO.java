@@ -20,4 +20,7 @@ public class SendMailVO {
 
     private String loginId;
 
+    // 인증코드 비교 로직에서 사용할 seq 값
+    private Long seq;
+
 }

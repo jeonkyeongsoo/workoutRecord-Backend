@@ -1,6 +1,5 @@
 package kr.co.side.healthcare.controller.mail;
 
-import jakarta.mail.MessagingException;
 import kr.co.side.healthcare.service.mail.SendMailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class SendMail {
+public class SendMailController {
 
     private final SendMailServiceImpl sendMailService;
 
@@ -29,6 +28,6 @@ public class SendMail {
 
         sendMailService.verifyAuthCode(request.get("email"), request.get("authCode"));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("인증번호 검증 성공");
     }
 }

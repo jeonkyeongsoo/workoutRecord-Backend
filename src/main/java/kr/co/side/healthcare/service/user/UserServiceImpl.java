@@ -1,16 +1,16 @@
 package kr.co.side.healthcare.service.user;
 
+import kr.co.side.healthcare.common.exception.CustomException;
 import kr.co.side.healthcare.domain.user.LoginUserResVO;
 import kr.co.side.healthcare.domain.user.RequestSignupVO;
 import kr.co.side.healthcare.domain.user.UserVO;
 import kr.co.side.healthcare.repository.user.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
+import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -89,5 +89,29 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean confirmUserByLoginId(String loginId) {
         return userRepo.confirmUserByLoginId(loginId);
+    }
+
+    @Override
+    public void resetPassword(UserVO userVO) {
+        UserVO getPassword = userRepo.getPassword(userVO);
+
+        boolean isPassword = passwordEncoder.matches(userVO.getPassword(), getPassword.getPassword());
+
+        if(!isPassword){
+            String encryptPassword = passwordEncoder.encode(userVO.getPassword());
+            userVO = UserVO.builder()
+                    .password(encryptPassword)
+                    .loginId(userVO.getLoginId())
+                    .build();
+
+            try{
+                userRepo.resetPassword(userVO);
+            } catch (SqlSessionException e){
+                throw new SqlSessionException("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+            }
+        } else{
+            throw new CustomException("기존 비밀번호와 일치합니다. 다시 시도해주세요.", 400);
+        }
+
     }
 }

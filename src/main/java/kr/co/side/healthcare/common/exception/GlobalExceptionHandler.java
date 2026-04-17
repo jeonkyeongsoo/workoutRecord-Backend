@@ -1,5 +1,6 @@
 package kr.co.side.healthcare.common.exception;
 
+import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
 
+    @ExceptionHandler(SqlSessionException.class)
+    public ResponseEntity<?> handleSqlSessionException(SqlSessionException e){
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
     @ExceptionHandler(MailSendException.class)
     public ResponseEntity<?> handleMailSendException(MailSendException e){
         return ResponseEntity.status(500).body(e.getMessage());
@@ -43,6 +49,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(500).body(e.getMessage());
     }
 
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> handleCustomException(CustomException e){
+        return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
+    }
 
 
 }

@@ -2,6 +2,7 @@ package kr.co.side.healthcare.service.mail;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import kr.co.side.healthcare.common.exception.CustomException;
 import kr.co.side.healthcare.domain.mail.SendMailVO;
 import kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO;
 import kr.co.side.healthcare.mapper.mail.sendHistory.SendHistoryMapper;
@@ -11,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -25,6 +27,8 @@ public class SendMailServiceImpl implements SendMailService {
 
     private final Map<String, String> authCodeMap = new HashMap<>();
 
+    private final Map<String, Long> seqMap = new HashMap<>();
+
     public void sendMail(SendMailVO sendMailVO){
         MimeMessage message = mailSender.createMimeMessage();
 
@@ -37,9 +41,11 @@ public class SendMailServiceImpl implements SendMailService {
 
             SendMailHistoryVO sendMailHistoryVO = SendMailHistoryVO.builder()
                     .mailSuccessYn("Y")
-                    .loginId(sendMailVO.getLoginId())
+                    .seq(sendMailVO.getSeq())
+                    .expiredAt(LocalDateTime.now().plusMinutes(5))
                     .build();
             sendHistoryMapper.updateMailSuccessYn(sendMailHistoryVO);
+            seqMap.put("seq", sendMailVO.getSeq());
         } catch (MessagingException e) {
             throw new MailSendException("이메일 전송 실패. 다시 시도해주세요.");
         } catch (Exception e) {
@@ -69,7 +75,16 @@ public class SendMailServiceImpl implements SendMailService {
                     sendMailVO = SendMailVO.builder()
                             .to(email)
                             .loginId(loginId)
-                            .subject("[WORKOUT RECORD] 비밀번호 찾기 인증번호")
+                            .seq(sendMailHistoryVO.getSeq())
+                            .subject("[WORKOUT RECORD] 인증번호 발송")
+                            .content("<h1>인증번호: " + code + "</h1>")
+                            .build();
+            case "resendAuthCode" ->
+                    sendMailVO = SendMailVO.builder()
+                            .to(email)
+                            .loginId(loginId)
+                            .seq(sendMailHistoryVO.getSeq())
+                            .subject("[WORKOUT RECORD] 인증번호 재발송")
                             .content("<h1>인증번호: " + code + "</h1>")
                             .build();
         }
@@ -83,12 +98,25 @@ public class SendMailServiceImpl implements SendMailService {
     @Override
     public void verifyAuthCode(String email, String authCode) {
         String savedCode = authCodeMap.get(email);
+        Long seq = seqMap.get("seq");
+
+        SendMailHistoryVO sendMailHistoryVO = sendHistoryMapper.getExpiredAt(seq);
+
+        if(LocalDateTime.now().isAfter(sendMailHistoryVO.getExpiredAt())){
+            removeAuthCode(email);
+            throw new CustomException("인증시간이 만료되었습니다. 다시 시도해주세요.", 400);
+        }
 
         try{
             if(savedCode.equals(authCode)){
                 removeAuthCode(email);
+                SendMailHistoryVO vo = SendMailHistoryVO.builder()
+                        .seq(seq)
+                        .isVerified("Y")
+                        .build();
+                sendHistoryMapper.updateIsVerified(vo);
             } else{
-
+                throw new CustomException("인증코드가 틀립니다. 다시 시도해주세요.", 400);
             }
         } catch (NullPointerException e){
             throw new NullPointerException("인증번호가 없습니다. 다시 시도해주세요.");
@@ -99,6 +127,7 @@ public class SendMailServiceImpl implements SendMailService {
 
     public void removeAuthCode(String email) {
         authCodeMap.remove(email);
+        seqMap.remove("seq");
     }
 
     public String generatedCode() {

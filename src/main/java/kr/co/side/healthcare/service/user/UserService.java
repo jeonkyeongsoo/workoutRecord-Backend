@@ -2,6 +2,7 @@ package kr.co.side.healthcare.service.user;
 
 import kr.co.side.healthcare.domain.user.LoginUserResVO;
 import kr.co.side.healthcare.domain.user.RequestSignupVO;
+import kr.co.side.healthcare.domain.user.UserVO;
 
 import java.util.Map;
 
@@ -15,4 +16,6 @@ public interface UserService {
     Map<String, Object> insertSignupInfo(RequestSignupVO vo);
 
     boolean confirmUserByLoginId(String loginId);
+
+    void resetPassword(UserVO userVO);
 }

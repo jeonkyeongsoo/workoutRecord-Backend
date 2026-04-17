@@ -4,18 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.side.healthcare.mapper.mail.sendHistory.SendHistoryMapper">
-    <insert id="insertSendHistory" parameterType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO">
+    <insert id="insertSendHistory" parameterType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO" useGeneratedKeys="true" keyProperty="seq" keyColumn="seq">
         insert into
-            tb_maill_send_history(login_id, email, type, auth_code, created_at)
+            tb_mail_send_history(login_id, email, type, auth_code, created_at)
         values (#{loginId}, #{email}, #{type}, #{authCode}, NOW())
     </insert>
 
     <update id="updateMailSuccessYn" parameterType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO">
         update
-            tb_maill_send_history
+            tb_mail_send_history
         set
-            mail_success_yn = #{mailSuccessYn}
+            mail_success_yn = #{mailSuccessYn},
+            expired_at = #{expiredAt},
+            end_at = NOW()
         where
-            login_id = #{loginId}
+            seq = #{seq}
+    </update>
+
+    <select id="getExpiredAt" parameterType="Long" resultType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO">
+        select
+            expired_at
+        from
+            tb_mail_send_history
+        where
+            seq = #{seq}
+    </select>
+
+    <update id="updateIsVerified" parameterType="kr.co.side.healthcare.domain.mail.history.SendMailHistoryVO">
+        update
+            tb_mail_send_history
+        set
+            is_verified = #{isVerified}
+        where
+            seq = #{seq}
     </update>
 </mapper>

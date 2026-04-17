@@ -14,13 +14,13 @@ public class UserVO {
     private String userId;
     private String loginId;
     private String password;
-    private int roleId;
+    private Integer roleId;
     private String createdAt;
     private String updatedAt;
     private String roleName;
     private String useYn;
     private String lockedYn;
-    private int loginFailCount;
+    private Integer loginFailCount;
     private String deletedYn;
     private String email;
     private String phone;

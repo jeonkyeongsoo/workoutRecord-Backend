@@ -21,6 +21,7 @@ public class SecurityConfig {
     private final CustomAuthenticationProvider customAuthenticationProvider;
     private final CustomSuccessHandler successHandler;
     private final CustomFailureHandler failureHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Bean
     public AuthenticationManager authenticationManager() {
@@ -42,6 +43,13 @@ public class SecurityConfig {
                         .passwordParameter("password")
                         .successHandler(successHandler)
                         .failureHandler(failureHandler)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/logout")
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .clearAuthentication(true)
                 )
                 .authenticationManager(authenticationManager());
 

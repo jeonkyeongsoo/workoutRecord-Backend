@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.side.healthcare.mapper.routine.RoutineMapper">
+
+    <insert id="saveRoutineTemplate" parameterType="kr.co.side.healthcare.domain.routine.RoutineTemplateVO" useGeneratedKeys="true" keyProperty="templateId" >
+        insert into
+            tb_routine_template (user_id, template_name, ex_category_cd, created_at)
+        values
+            (#{userId}, #{templateName}, #{exCategoryCd}, NOW())
+    </insert>
+
+    <insert id="saveRoutineTemplateItem" parameterType="kr.co.side.healthcare.domain.routine.RoutineTemplateItemVO" useGeneratedKeys="true" keyProperty="templateItemId">
+        insert into
+            tb_routine_template_item (template_id, exercise_item_name, sort_order, created_at)
+        values
+            (#{templateId}, #{exerciseItemName}, #{sortOrder}, NOW())
+    </insert>
+
+    <insert id="saveRoutineTemplateSet" parameterType="kr.co.side.healthcare.domain.routine.RoutineTemplateSetVO">
+        insert into
+            tb_routine_template_set (template_item_id, set_no, planned_weight_kg, planned_reps, created_at)
+        values
+            (#{templateItemId}, #{setNo}, #{plannedWeightKg}, #{plannedReps}, NOW())
+    </insert>
+
+    <select id="getRoutineList" parameterType="String" resultType="kr.co.side.healthcare.domain.routine.response.RoutineResVO">
+        select  trt.user_id, trt.template_id, trt.template_name, trt.ex_category_cd, trti.template_item_id, trti.sort_order, trti.exercise_item_name, trts.set_no, trts.planned_weight_kg, trts.planned_reps
+        from tb_routine_template trt
+        join tb_routine_template_item trti
+             on trt.template_id = trti.template_id
+        join tb_routine_template_set trts
+             on trti.template_item_id = trts.template_item_id
+        where trt.user_id = #{loginId}
+    </select>
+</mapper>

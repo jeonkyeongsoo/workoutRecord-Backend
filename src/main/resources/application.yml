@@ -41,6 +41,9 @@ mybatis:
 
 server:
   port: 9090
+  servlet:
+    session:
+      timeout: 2h
 
 jasypt:
   encryptor:

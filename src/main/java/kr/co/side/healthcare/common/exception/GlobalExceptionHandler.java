@@ -49,6 +49,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(500).body(e.getMessage());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e){
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleCustomException(CustomException e){
         return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());

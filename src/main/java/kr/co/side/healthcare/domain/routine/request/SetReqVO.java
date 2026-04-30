@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SetReqVO {
 
+    private Long templateSetId;
     private int setNo;
     private double plannedWeightKg;
     private int plannedReps;

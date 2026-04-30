@@ -35,4 +35,34 @@ public class routineRepoImpl implements routineRepo {
     public List<RoutineResVO> getRoutineList(String loginId) {
         return routineMapper.getRoutineList(loginId);
     }
+
+    @Override
+    public List<RoutineResVO> getRoutineDetail(Long templateId) {
+        return routineMapper.getRoutineDetail(templateId);
+    }
+
+    @Override
+    public void updateRoutineTemplateItem(RoutineTemplateItemVO routineTemplateItemVO) {
+        routineMapper.updateRoutineTemplateItem(routineTemplateItemVO);
+    }
+
+    @Override
+    public void updateRoutineTemplateSet(RoutineTemplateSetVO routineTemplateSetVO) {
+        routineMapper.updateRoutineTemplateSet(routineTemplateSetVO);
+    }
+
+    @Override
+    public void deleteSet(Long templateSetId) {
+        routineMapper.deleteSet(templateSetId);
+    }
+
+    @Override
+    public void deleteExercise(Long templateItemId) {
+        routineMapper.deleteExercise(templateItemId);
+    }
+
+    @Override
+    public void deleteSetByTemplateItemId(Long templateItemId) {
+        routineMapper.deleteSetByTemplateItemId(templateItemId);
+    }
 }

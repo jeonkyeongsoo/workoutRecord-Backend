@@ -21,4 +21,5 @@ public class RoutineResVO {
     private int setNo;
     private double plannedWeightKg;
     private int plannedReps;
+    private Long templateSetId;
 }

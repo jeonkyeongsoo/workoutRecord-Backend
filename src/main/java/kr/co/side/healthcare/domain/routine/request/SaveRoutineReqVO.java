@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SaveRoutineReqVO {
 
+    private Long templateId;
     private String templateName;
     private String exCategoryName;
     private List<ExerciseReqVO> exercises;

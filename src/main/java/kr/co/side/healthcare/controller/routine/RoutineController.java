@@ -4,11 +4,14 @@ import jakarta.servlet.http.HttpSession;
 import kr.co.side.healthcare.domain.CustomUserDetails;
 import kr.co.side.healthcare.domain.routine.request.SaveRoutineReqVO;
 import kr.co.side.healthcare.domain.routine.response.RoutineResVO;
+import kr.co.side.healthcare.domain.routine.response.TemplateResVO;
 import kr.co.side.healthcare.service.routine.RoutineServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/routine")
@@ -23,9 +26,16 @@ public class RoutineController {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
         String loginId = user.getUser().getLoginId();
 
-        routineService.getRoutineList(loginId);
+        List<TemplateResVO> routineList = routineService.getRoutineList(loginId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(routineList);
+    }
+
+    @GetMapping("/view/detail")
+    public ResponseEntity getRoutineDetail(@RequestParam Long templateId, Authentication authentication) {
+
+        List<TemplateResVO> routineDetailList = routineService.getRoutineDetail(templateId);
+        return ResponseEntity.ok().body(routineDetailList);
     }
 
     @PostMapping("/save")
@@ -34,6 +44,12 @@ public class RoutineController {
         String userId = user.getUser().getLoginId();
 
         routineService.saveRoutineTemplate(req, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update/detail")
+    public ResponseEntity updateRoutineDetail(@RequestBody SaveRoutineReqVO reqVO) {
+        routineService.updateRoutineDetail(reqVO);
         return ResponseEntity.ok().build();
     }
 }

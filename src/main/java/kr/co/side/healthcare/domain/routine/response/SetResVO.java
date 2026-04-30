@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SetResVO {
 
+    private Long templateSetId;
     private int setNo;
     private double plannedWeightKg;
     private int plannedReps;

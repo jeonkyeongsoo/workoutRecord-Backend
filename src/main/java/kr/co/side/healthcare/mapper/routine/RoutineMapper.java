@@ -17,4 +17,17 @@ public interface RoutineMapper {
     void saveRoutineTemplateSet(RoutineTemplateSetVO routineTemplateSetVO);
 
     List<RoutineResVO> getRoutineList(String loginId);
+
+    List<RoutineResVO> getRoutineDetail(Long templateId);
+
+    void updateRoutineTemplateItem(RoutineTemplateItemVO routineTemplateItemVO);
+
+    void updateRoutineTemplateSet(RoutineTemplateSetVO routineTemplateSetVO);
+
+
+    void deleteSet(Long templateSetId);
+
+    void deleteExercise(Long templateItemId);
+
+    void deleteSetByTemplateItemId(Long templateItemId);
 }

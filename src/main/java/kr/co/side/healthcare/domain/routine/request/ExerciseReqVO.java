@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ExerciseReqVO {
 
+    private Long templateItemId;
     private String exerciseItemName;
     private int sortOrder;
     private List<SetReqVO> sets;

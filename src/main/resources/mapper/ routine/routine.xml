@@ -35,4 +35,68 @@
              on trti.template_item_id = trts.template_item_id
         where trt.user_id = #{loginId}
     </select>
+
+    <select id="getRoutineDetail" parameterType="Long" resultType="kr.co.side.healthcare.domain.routine.response.RoutineResVO">
+        select  trt.user_id, trt.template_id, trt.template_name, trt.ex_category_cd, trti.template_item_id , trti.sort_order, trti.exercise_item_name, trts.set_no, trts.template_set_id, trts.planned_weight_kg, trts.planned_reps
+        from tb_routine_template trt
+                 join tb_routine_template_item trti
+                      on trt.template_id = trti.template_id
+                 join tb_routine_template_set trts
+                      on trti.template_item_id = trts.template_item_id
+        where trt.template_id = #{templateId}
+        order by trti.sort_order, trts.set_no
+    </select>
+
+    <update id="updateRoutineTemplateItem" parameterType="kr.co.side.healthcare.domain.routine.RoutineTemplateItemVO">
+        update
+            tb_routine_template_item
+        set
+            exercise_item_name = #{exerciseItemName},
+            sort_order = #{sortOrder},
+            updated_at = NOW()
+        where
+            template_item_id = #{templateItemId}
+        and (
+            exercise_item_name &lt;&gt; #{exerciseItemName}
+            or sort_order &lt;&gt; #{sortOrder}
+            )
+    </update>
+
+    <update id="updateRoutineTemplateSet" parameterType="kr.co.side.healthcare.domain.routine.RoutineTemplateSetVO">
+        update
+            tb_routine_template_set
+        set
+            set_no = #{setNo},
+            planned_reps = #{plannedReps},
+            planned_weight_kg = #{plannedWeightKg},
+            updated_at = NOW()
+        where
+            template_set_id = #{templateSetId}
+        and (
+            set_no &lt;&gt; #{setNo}
+            or planned_reps &lt;&gt; #{plannedReps}
+            or planned_weight_kg &lt;&gt; #{plannedWeightKg}
+            )
+    </update>
+
+    <delete id="deleteSet" parameterType="Long">
+        delete from
+                   tb_routine_template_set
+        where
+            template_set_id = #{templateSetId}
+    </delete>
+
+    <delete id="deleteSetByTemplateItemId" parameterType="Long">
+        delete from
+                   tb_routine_template_set
+        where
+            template_item_id = #{templateItemId}
+    </delete>
+
+    <delete id="deleteExercise" parameterType="Long">
+        delete from
+                   tb_routine_template_item
+        where
+            template_item_id = #{templateItemId}
+    </delete>
 </mapper>

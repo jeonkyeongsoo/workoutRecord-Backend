@@ -38,6 +38,17 @@ public class RoutineController {
         return ResponseEntity.ok().body(routineDetailList);
     }
 
+    @GetMapping("/calendarList")
+    public ResponseEntity getRoutineCalendarList(Authentication authentication) {
+
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+        String loginId = user.getUser().getLoginId();
+
+        List<TemplateResVO> routineList = routineService.getRoutineList(loginId);
+
+        return ResponseEntity.ok().body(routineList);
+    }
+
     @PostMapping("/save")
     public ResponseEntity saveRoutine(@RequestBody SaveRoutineReqVO req, Authentication authentication) {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();

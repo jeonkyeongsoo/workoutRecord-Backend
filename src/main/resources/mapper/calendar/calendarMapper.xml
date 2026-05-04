@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.side.healthcare.mapper.calendar.CalendarMapper">
+
+    <select id="getList" parameterType="String" resultType="kr.co.side.healthcare.domain.calendar.ResCalendarVO">
+        select
+            trt.template_name as schedule_name,
+            tws.schedule_id as schedule_id,
+            trt.template_id as template_id,
+            tws.workout_date as schedule_date,
+            tws.status as scheduleStatus,
+            tws.memo as memo
+        from
+            tb_workout_schedule tws join tb_routine_template trt on tws.template_id = trt.template_id
+        where
+            login_id = #{login_id}
+    </select>
+
+    <insert id="saveWorkout" parameterType="kr.co.side.healthcare.domain.calendar.ReqCalendarVO">
+        insert into
+            tb_workout_schedule(title, login_id, workout_date, status, memo, created_at, template_id)
+        values
+            (#{title}, #{loginId}, #{workoutDate}, #{status}, #{memo}, NOW(), #{templateId})
+    </insert>
+</mapper>

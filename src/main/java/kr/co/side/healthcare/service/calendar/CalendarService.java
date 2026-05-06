@@ -9,4 +9,8 @@ public interface CalendarService {
     List<ResCalendarVO> getList(String loginId);
 
     void saveWorkout(ReqCalendarVO reqVO, String loginId);
+
+    void deleteWorkoutDetail(Long scheduleId);
+
+    void updateWorkoutDetail(ReqCalendarVO reqVO);
 }

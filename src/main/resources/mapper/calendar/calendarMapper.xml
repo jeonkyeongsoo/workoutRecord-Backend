@@ -7,14 +7,14 @@
 
     <select id="getList" parameterType="String" resultType="kr.co.side.healthcare.domain.calendar.ResCalendarVO">
         select
-            trt.template_name as schedule_name,
+            tws.title as schedule_name,
             tws.schedule_id as schedule_id,
             trt.template_id as template_id,
             tws.workout_date as schedule_date,
             tws.status as scheduleStatus,
             tws.memo as memo
         from
-            tb_workout_schedule tws join tb_routine_template trt on tws.template_id = trt.template_id
+            tb_workout_schedule tws left join tb_routine_template trt on tws.template_id = trt.template_id
         where
             login_id = #{login_id}
     </select>
@@ -25,4 +25,23 @@
         values
             (#{title}, #{loginId}, #{workoutDate}, #{status}, #{memo}, NOW(), #{templateId})
     </insert>
+
+    <delete id="deleteWorkoutDetail" parameterType="Long">
+        delete from
+                   tb_workout_schedule
+        where
+            schedule_id = #{scheduleId}
+    </delete>
+
+    <update id="updateWorkoutDetail" parameterType="kr.co.side.healthcare.domain.calendar.ReqCalendarVO">
+        update
+            tb_workout_schedule
+        set
+            title = #{title},
+            status = #{status},
+            memo = #{memo},
+            updated_at = NOW()
+        where
+            schedule_id = #{scheduleId}
+    </update>
 </mapper>

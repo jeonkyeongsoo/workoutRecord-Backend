@@ -11,4 +11,8 @@ public interface CalendarMapper {
     List<ResCalendarVO> getList(String loginId);
 
     void saveWorkout(ReqCalendarVO reqCalendarVO);
+
+    void deleteWorkoutDetail(Long scheduleId);
+
+    void updateWorkoutDetail(ReqCalendarVO reqVO);
 }

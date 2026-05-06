@@ -16,4 +16,5 @@ public class ReqCalendarVO {
     private String workoutDate;
     private String memo;
     private String status;
+    private Long scheduleId;
 }

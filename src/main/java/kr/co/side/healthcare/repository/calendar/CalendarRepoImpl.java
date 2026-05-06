@@ -23,4 +23,14 @@ public class CalendarRepoImpl implements CalendarRepo{
     public void saveWorkout(ReqCalendarVO reqCalendarVO) {
         calendarMapper.saveWorkout(reqCalendarVO);
     }
+
+    @Override
+    public void deleteWorkoutDetail(Long scheduleId) {
+        calendarMapper.deleteWorkoutDetail(scheduleId);
+    }
+
+    @Override
+    public void updateWorkoutDetail(ReqCalendarVO reqVO) {
+        calendarMapper.updateWorkoutDetail(reqVO);
+    }
 }
